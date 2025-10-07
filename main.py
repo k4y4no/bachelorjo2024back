@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
 from api.event_api import EventAPI
 from src.config.database import Base, engine, session_local
@@ -27,6 +28,15 @@ app = FastAPI(lifespan=lifespan)
 
 # API init
 event_api = EventAPI()
+
+# CORS access
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
