@@ -5,7 +5,7 @@ class SportOut(BaseModel):
     id: int
     name: str
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class LocationOut(BaseModel):
@@ -13,7 +13,7 @@ class LocationOut(BaseModel):
     name: str
     nb_places: int
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class EventOut(BaseModel):
@@ -22,7 +22,7 @@ class EventOut(BaseModel):
     sport: SportOut
     location: LocationOut
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class EventResponse(BaseModel):
@@ -32,5 +32,13 @@ class EventResponse(BaseModel):
     # nb_places: int
     date_event: date
 
-    class Config:
+    class ConfigDict:
+        from_attributes = True
+
+class EventCreate(BaseModel):
+    sport_id: int
+    location_id: int
+    date_event: date
+
+    class ConfigDict:
         from_attributes = True
