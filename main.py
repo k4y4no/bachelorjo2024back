@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.event_api import EventAPI
+from api.user_api import UserApi
 from src.config.database import Base, engine, session_local
 from src.model.event import Event, Sport, Location
 from devfakedata.seed import seed
@@ -28,6 +29,7 @@ app = FastAPI(lifespan=lifespan)
 
 # API init
 event_api = EventAPI()
+user_api = UserApi()
 
 # CORS access
 app.add_middleware(
@@ -48,6 +50,12 @@ app.include_router(
     event_api.router,
     prefix="/event",
     tags=["Event"]
+)
+
+app.include_router(
+    user_api.router,
+    prefix="/user",
+    tags=["User"]
 )
 
 
