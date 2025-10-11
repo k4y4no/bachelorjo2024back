@@ -17,3 +17,13 @@ def create_token(data: dict) -> Token:
                SECRET_KEY,
                algorithm=ALGORITHM),
                token_type="Bearer")
+
+def verify_token(token: str) -> dict:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token invalide ou expiré"
+        )  
