@@ -11,6 +11,7 @@ class UserCreate(UserLogin):
 
 
 class UserResponse(BaseModel):
+    roles: list[str]
     email: str
     name: str
     firstname:str

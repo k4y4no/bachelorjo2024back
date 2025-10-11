@@ -1,4 +1,5 @@
 from datetime import date
+from model.offer_ticket import OfferTicket
 from src.config.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship, Mapped, mapped_column
@@ -12,6 +13,8 @@ class Event(Base):
     date_event:Mapped[date] = mapped_column(Date, default=date.today)
     sport: Mapped["Sport"] = relationship(back_populates="events")
     location: Mapped["Location"] = relationship(back_populates="events")
+    offer_tickets: Mapped[list["OfferTicket"]] = relationship(back_populates="eventJO", cascade="all, delete-orphan")
+
 
 
 class Sport(Base):
