@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
+from src.service.token_service import verify_token
 from src.config.database import get_db  
 from src.schema.offer_tickets_schema import OfferTicketResponseSchema, OfferTicketCreateSchema, OfferTicketUpdateSchema
 from src.controller.offer_ticket_controller import (
@@ -27,7 +28,8 @@ class OfferTicketAPI:
             return read_offer_ticket_by_id(offer_ticket_id, db)
 
         @self.router.post("/", response_model=OfferTicketResponseSchema)
-        def create_offer_ticket_endpoint(offer_ticket: OfferTicketCreateSchema, db: Session = Depends(get_db)):
+        def create_offer_ticket_endpoint(offer_ticket: OfferTicketCreateSchema, request: Request, db: Session = Depends(get_db)):
+            verify_token(request=request)
             return create_offer_ticket(offer_ticket, db)
 
         @self.router.delete("/{offer_ticket_id}", response_model=OfferTicketResponseSchema)
