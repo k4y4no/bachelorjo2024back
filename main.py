@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
+from api import offer_api
 from api.event_api import EventAPI
 from api.user_api import UserApi
 from api.auth_api import AuthApi
+from api.offer_api import OfferTicketAPI
 from src.config.database import Base, engine, session_local
 from src.model.event import Event, Sport, Location
 from devfakedata.seed import seed
@@ -32,6 +34,7 @@ app = FastAPI(lifespan=lifespan)
 event_api = EventAPI()
 user_api = UserApi()
 auth_api = AuthApi()
+offer_api = OfferTicketAPI()
 
 # CORS access
 app.add_middleware(
@@ -66,4 +69,8 @@ app.include_router(
     tags=["Auth"]
 )
 
-
+app.include_router(
+    offer_api.router,
+    prefix="/offer",
+    tags=["Offer"]
+)
