@@ -2,7 +2,7 @@ import secrets
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
-from src.schema.user_schema import UserCreate, UserLogin
+from src.schema.user_schema import UserCreate, UserLogin, UserResponse
 from src.service.auth_service import get_user_by_email
 from src.config.hash import pwd_context
 from src.model.user import User, Role
@@ -32,4 +32,11 @@ def create_user(user: UserCreate, db: Session):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return new_user
+    return UserResponse(
+        id=new_user.id,
+        name=new_user.name,
+        firstname=new_user.firstname,
+        email=new_user.email,
+        phone=new_user.phone,
+        roles=[r.name for r in new_user.roles]
+    ).model_dump()

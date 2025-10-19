@@ -13,9 +13,9 @@ def read_events(db: Session):
         .all()
     )
 
-def create_events(eventJO: EventCreate ,db: Session):
-    new_eventJO = Event(**eventJO.model_dump())
-    db.add(new_eventJO)
+def create_events(event_jo: EventCreate ,db: Session):
+    new_event_jo = Event(**event_jo.model_dump())
+    db.add(new_event_jo)
     db.commit()
-    db.refresh(new_eventJO)
-    return new_eventJO
+    db.refresh(new_event_jo)
+    return new_event_jo

@@ -1,21 +1,16 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
+from fastapi import HTTPException, Response, status
 
 
+from src.service.query_service import get_by_id_or_404, get_all
 from src.model.offer_ticket import OfferTicket
 from src.schema.offer_tickets_schema import OfferTicketCreateSchema, OfferTicketResponseSchema, OfferTicketUpdateSchema
 
-def read_offer_tickets(db: Session):
-   return db.query(OfferTicket).all()
-   
-def read_offer_ticket_by_id(offer_ticket_id: int, db: Session):
-    offer_ticket = db.query(OfferTicket).filter(OfferTicket.id == offer_ticket_id).first()
-    if not offer_ticket:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Offer ticket not found"
-        )
-    return offer_ticket
+def read_offer_tickets(db: Session) -> list[OfferTicket]:
+   return get_all(db, OfferTicket)
+
+def read_offer_ticket_by_id(offer_ticket_id: int, db: Session) -> OfferTicket:
+    return get_by_id_or_404(db, OfferTicket, offer_ticket_id)
 
 def create_offer_ticket(offer_ticket: OfferTicketCreateSchema, db: Session):
     new_offer_ticket = OfferTicket(
@@ -29,25 +24,17 @@ def create_offer_ticket(offer_ticket: OfferTicketCreateSchema, db: Session):
     return new_offer_ticket
 
 def delete_offer_ticket(offer_ticket_id: int, db: Session):
-    offer_ticket = db.query(OfferTicket).filter(OfferTicket.id == offer_ticket_id).first()
-    if not offer_ticket:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Offer ticket not found"
-        )
+    offer_ticket = get_by_id_or_404(db, OfferTicket, offer_ticket_id)
     db.delete(offer_ticket)
     db.commit()
-    return {"message": "Offer ticket deleted successfully"}
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 def update_offer_ticket(offer_ticket_id: int, offer_ticket_data: OfferTicketUpdateSchema, db: Session):
-    offer_ticket = db.query(OfferTicket).filter(OfferTicket.id == offer_ticket_id).first()
-    if not offer_ticket:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Offer ticket not found"
-        )
-    for key, value in offer_ticket_data.model_dump().items():
-        setattr(offer_ticket_data, key, value)
+    offer_ticket = get_by_id_or_404(db, OfferTicket, offer_ticket_id)
+    update_data = offer_ticket_data.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        if hasattr(offer_ticket, key):
+            setattr(offer_ticket, key, value)
 
 
     db.commit()
