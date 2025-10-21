@@ -19,5 +19,5 @@ class EventAPI:
             return read_events(db)
 
         @self.router.post("/", response_model=EventResponse)
-        def create_event_endpoint(eventJO: EventCreate, request: Request,db: Session = Depends(get_db)):
-            return create_events(eventJO, db)
+        def create_event_endpoint(event_jo: EventCreate, request: Request,db: Session = Depends(get_db)):
+            return create_events(event_jo, db)
