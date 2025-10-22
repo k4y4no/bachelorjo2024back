@@ -21,6 +21,10 @@ class AuthApi:
         def login(user: UserLogin,  db: Session = Depends(get_db)):
             return login_user(user, db)
         
+        @self.router.post(path="/login", response_model=Token)
+        def login_alias(user: UserLogin, db: Session = Depends(get_db)):
+            return login_user(user, db)
+        
                 
         @self.router.post(path="/logout")
         def logout():
