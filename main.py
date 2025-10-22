@@ -41,7 +41,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:4200",
-        "https://bachelorjo2024back-production.up.railway.app"
+        "https://jofront-116031105986.europe-west1.run.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
