@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware import ProxyHeadersMiddleware
 
 from api import offer_api
 from api.event_api import EventAPI
@@ -35,6 +36,9 @@ event_api = EventAPI()
 user_api = UserApi()
 auth_api = AuthApi()
 offer_api = OfferTicketAPI()
+
+# Trust proxy headers (X-Forwarded-Proto) so redirects keep https scheme
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 # CORS access
 app.add_middleware(
