@@ -39,8 +39,9 @@ substitutions:
   _REPO_NAME: 'bachelorjo2024back'
   _SERVICE_NAME: 'joback'
   _REGION: 'europe-west1'
-  _CLOUD_SQL_CONNECTION_NAME: ''  # ex: project:region:instance — set in trigger or CI
-  _DB_USER: ''                     # set in trigger or CI
-  _DB_NAME: ''                     # set in trigger or CI
+  _MAX_INSTANCES: '2' 
+  _CLOUD_SQL_CONNECTION_NAME: 'frontendjo2024:europe-west1:google-sql-postgress'  # ex: project:region:instance — set in trigger or CI
+  _DB_USER: 'postgres'                     # set in trigger or CI
+  _DB_NAME: 'jo2024'                     # set in trigger or CI
 
 timeout: '1200s'
