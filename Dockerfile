@@ -1,4 +1,4 @@
-FROM python:3.12.11-alpine3.22
+FROM python:3.12-slim
 
 
 WORKDIR /app
@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 8080
 
 
-ENTRYPOINT ["uvicorn", "api.main:app","--host","0.0.0.0",  "--port", "8080"]
+ENTRYPOINT ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "-b", "0.0.0.0:8080", "--workers", "1", "--timeout", "120"]
