@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 8080
 
 
-ENTRYPOINT ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "-b", "0.0.0.0:8080", "--workers", "1", "--timeout", "120"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
